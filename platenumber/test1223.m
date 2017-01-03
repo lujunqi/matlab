@@ -78,6 +78,8 @@ PX2=PX2-1;
 % PY1=PY1-5;
 % PY2=PY2+5;
 
+
+
 dw=I(PY1:PY2,PX1:PX2,:);%求得车牌区域
 %% 车牌分割
 figure;
