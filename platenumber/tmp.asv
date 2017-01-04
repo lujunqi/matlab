@@ -1,7 +1,7 @@
 
 clear;clc;close all;
 
-Image=imread('http://image.xcar.com.cn/attachments/a/day_141021/2014102113_b36c2a046cc00fbec302lBug5leyz9Xv.jpg');
+Image=imread(FileName());
 Image=im2double(Image);
 s=size(Image,2)
 I=rgb2hsv(Image);
@@ -78,12 +78,21 @@ IX = I(PY1:PY2, PX1:PX2, :);
 subplot(235),imshow(IX),title('hsv');
 I2=im2bw(IX,0.5);
 subplot(236),imshow(I2),title('二值化');
+
 %% 车牌分割
 figure;
-[y1,x1,z1]=size(I2);
-I3=double(I2);
-TT=1;
-minY = sum(I3(1:int32(2/5*y1),:,1),2);
-maxY = sum(I3(int32(3/5*y1):y1,:,1),2);
-subplot(221),hist(minY[:,);
-subplot(222),imshow(I3),title('目标车牌区域');
+max_num=max(max(I2));
+min_num=min(min(I2));
+thresh=(max_num-min_num)/5;%15
+image_correct_row=edge(I2,'sobel',thresh,'vertical');%根据所指定的敏感度阈值thresh，在所指定的方向direction上，
+histrow=sum(image_correct_row');  %计算水平投影
+histrow_mean=mean(histrow);
+histcol=sum(image_correct_row);  %计算竖直投影
+histcol_mean=mean(histcol);
+[width ,hight]=size(image_correct_row);
+
+
+rowtop =find(histrow==min(histrow(1:int32(width/2))));%上边切割
+subplot(311),bar(histrow(1:int32(width/2)) );
+subplot(312),imshow(I2(max(rowtop):83,:));
+

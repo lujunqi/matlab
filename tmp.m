@@ -1,20 +1,20 @@
 clear;clc;close all;
+%% plot 测试
+url='e:/yezi/2.jpg';
+I = imread(url);  
+I1=rgb2gray(I);%灰度化
+I2=im2bw(I1,0.5);% 二值化
+figure;
 
-url='http://image.tianjimedia.com/uploadImages/2012/009/30B974543L56.jpg';
-img = imread(url);  
-  
-% get binary image  
-gray_img = rgb2gray(img);  
-T = graythresh(gray_img);  
-bw_img = im2bw(gray_img, T);  
-  
-% find the largest connected region  
-img_reg = regionprops(bw_img,  'area', 'boundingbox');  
-areas = [img_reg.Area];  
-rects = cat(1,  img_reg.BoundingBox); 
+y = sum(I2,1);
+subplot(511),plot(y),title('y1二值化');
+y2 = im2bw(y,0.5);
+subplot(512),bar(y2),title('y2二值化');
+x = sum(I2,2);
+subplot(513),plot(x),title('x1二值化');
+x(x<mean(x))=0;
+x(x>=mean(x))=1;
 
-figure(1),  
-imshow(bw_img);  
-for i = 1:size(rects, 1)  
-    rectangle('position', rects(i, :), 'EdgeColor', 'r');  
-end  
+x2 = im2bw(x,0.5);
+subplot(514),bar(x2),title('x2二值化');
+subplot(515),imshow(I2),title('原图');
