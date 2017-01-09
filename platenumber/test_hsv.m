@@ -39,7 +39,7 @@ if PY2 > y
     PY2 = y;
 end
 It=Image(PY1:PY2,:,:);
-subplot(231),imshow(It);
+subplot(231),imshow(It),title('Y切');
 IY = I(PY1:PY2, :, :);
 subplot(232),imshow(IY);
 I2=im2bw(IY,0.5);
@@ -93,7 +93,7 @@ rowtop =find(histrow==min(histrow(1:int32(width/2))));%上边切割
 rowbot =find(histrow==min(histrow(int32(width/2):width)));%下边切割
 
 subplot(411),bar(histrow(1:int32(width/2)) );
-subplot(412),imshow(I2(max(rowtop):width/2+min(rowbot),:));
+subplot(412),imshow(I2(max(rowtop): min(rowbot),:));
 
 histcol=sum(image_correct_row(max(rowtop):min(rowbot),:));  %计算竖直投影
 histcol = im2bw(histcol,0.5);

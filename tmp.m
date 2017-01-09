@@ -1,6 +1,7 @@
+
 clear;clc;close all;
 %% plot 测试
-url='e:/yezi/2.jpg';
+url='e:/yezi/3.jpg';
 I = imread(url);  
 I1=rgb2gray(I);%灰度化
 I2=im2bw(I1,0.5);% 二值化

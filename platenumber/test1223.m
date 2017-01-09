@@ -10,7 +10,7 @@ figure;
 i1=rgb2gray(I);%灰度化
 i2=edge(i1,'roberts');%边缘检测
 % i2=edge(i1,'canny');%边缘检测
-imwrite(i2,'e:\yezi\1229.jpg');
+% imwrite(i2,'e:\yezi\1229.jpg');
 subplot(2,2,1), imshow(i2),title('边缘');
 se=[1;1;1];%列腐蚀算子，腐蚀算子的形状很重要
 i3=imerode(i2,se);%此腐蚀可将非车牌区域的噪声信息腐蚀掉
