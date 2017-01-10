@@ -1,21 +1,27 @@
 
 clear;clc;close all;
-%% plot 测试
-url='e:/yezi/3.jpg';
+%% 测试
+url='e:/yezi/eye/0001.jpg';
 I = imread(url);  
-I1=rgb2gray(I);%灰度化
-I2=im2bw(I1,0.5);% 二值化
-figure;
+I2 = rgb2hsv(I);
+I2H = I2(:,:,1);
+I2S = I2(:,:,2);
+I2V = I2(:,:,3);
+I2V = im2double(I2V);
+I2G=rgb2gray(I);
+I3=edge(I2G,'roberts');%边缘检测
+se1=strel('disk',16,8);%圆形闭环算子
+I4=imclose(I3,se1);%闭环运算 需要选择大的算子
 
-y = sum(I2,1);
-subplot(511),plot(y),title('y1二值化');
-y2 = im2bw(y,0.5);
-subplot(512),bar(y2),title('y2二值化');
-x = sum(I2,2);
-subplot(513),plot(x),title('x1二值化');
-x(x<mean(x))=0;
-x(x>=mean(x))=1;
+avg = mean(I2V(:));
 
-x2 = im2bw(x,0.5);
-subplot(514),bar(x2),title('x2二值化');
-subplot(515),imshow(I2),title('原图');
+%  I2V(I2V>=avg) =1;
+%  I2V(I2V<avg) = 0;
+
+%% 显示
+figure(1);
+subplot(221),imshow(I2);
+subplot(222),imshow(I3);
+subplot(223),imshow(I4);
+subplot(224),imshow(I2S);
+

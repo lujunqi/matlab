@@ -1,5 +1,0 @@
-%% ÇãĞ± ½ÃÕı
-clear;clc;close all;
-I=imread('e:\yezi\1229.jpg');
-I1 = rgb2gray(I);%»Ò¶È»¯
-I2 = imrotate(I1,1,'bilinear');

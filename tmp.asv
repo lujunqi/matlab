@@ -1,0 +1,22 @@
+
+clear;clc;close all;
+%% ²âÊÔ
+url='e:/yezi/eye/0632.jpg';
+I = imread(url);  
+I2 = rgb2hsv(I);
+I2H = I2(:,:,1);
+I2S = I2(:,:,2);
+I2V = I2(:,:,3);
+I2V = im2double(I2V);
+avg = mean(I2V(I2V());
+
+I2V(I2V>avg) = 1;
+I2V(I2V<avg) = 0;
+
+%% ÏÔÊ¾
+figure(1);
+subplot(221),imshow(I2);
+subplot(222),imshow(I2V);
+subplot(223),imshow(I2H);
+subplot(224),imshow(I2S);
+

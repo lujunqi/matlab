@@ -1,7 +1,7 @@
 %% 车牌处理 形态+颜色（蓝牌）
 clear;clc;close all;
 %% 图片特征
-filename = FileName();
+filename = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1483954057230&di=e5bb119b8ad4b5b626d96eea959d5eea&imgtype=0&src=http%3A%2F%2Fimg.qc188.com%2Foledit%2Fuploadfile%2F2013%2F03%2F26%2F20130326200438992.jpg';
 
 I=imread(filename);%调用自编函数读取图像，并转化为灰度图象；
 
@@ -27,7 +27,7 @@ Image=im2double(I);
 I2 = rgb2hsv(I);
 
 %% 根据颜色提取 显示
-figure(2);
+figure;
 subplot(221),imshow(I);
 subplot(222),imshow(I2);
 subplot(223),imshow(rgb2hsv(Image));
@@ -40,55 +40,13 @@ for i = 1:size(rects, 1)
     
 end;
 [ma,K]=max(pec);
-
-subplot(224),imshow(i2),title('目标');
-
-% 倾斜矫正
-I47=edge(i1,'canny');%边缘检测
-
-
-[H,T,R]=hough(I47);
+target_I = imcrop(i2,rects(K,:));
+%% 倾斜矫正
+[H,T,R]=hough(target_I);
 P=houghpeaks(H,5,'threshold',ceil(0.3*max(H(:))));
 
 %得到线段信息
-lines=houghlines(I47,T,R,P,'FillGap',50,'MinLength',7);
-max_len = 0;
-for k=1:length(lines)
-    xy=[lines(k).point1;lines(k).point2];
-   % plot(xy(:,1),xy(:,2),'LineWidth',1);
-    len=norm(lines(k).point1-lines(k).point2);
-    Len(k)=len;
-    if (len>max_len)
-        max_len=len;
-        xy_long=xy;
-    end
-end
-%plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','blue');
-[L1 Index1]=max(Len(:));
-x1=[lines(Index1).point1(1) lines(Index1).point2(1)];
-y1=[lines(Index1).point1(2) lines(Index1).point2(2)];
-% 求得线段的斜率
-K1=-(lines(Index1).point1(2)-lines(Index1).point2(2))/...
-    (lines(Index1).point1(1)-lines(Index1).point2(1))
-angle=atan(K1)*180/pi;
-target_I = imcrop(I,rects(K,:));
+lines=houghlines(target_I,T,R,P,'FillGap',50,'MinLength',7);
 
-
-A = imrotate(target_I,-angle,'bilinear');% imrate 是逆时针的所以取一个负号
-% 滤出蓝色
-p=[0.56 0.71 0.4 1 0.3 1 0];
-A2 = rgb2hsv(A);
-
-A2(:,:,1)= 1;
-
-se=[1 1 1
-   ];%列腐蚀算子，腐蚀算子的形状很重要
-A76=imerode(A,se);
-
-figure;
-subplot(221),imshow(A);
-subplot(222),imshow(A76);
-subplot(223),imshow(A76);
-subplot(224),imshow(A2);
-
-
+subplot(224),imshow(target_I);
+imwrite(target_I,'e:\yezi\1229.jpg');
