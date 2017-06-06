@@ -29,7 +29,7 @@ I2 = rgb2hsv(I);
 %% 根据颜色提取 显示
 figure(2);
 subplot(221),imshow(I);
-subplot(222),imshow(I2);
+subplot(222),imshow(I2),titl;
 subplot(223),imshow(rgb2hsv(Image));
 pec = [];
 for i = 1:size(rects, 1)
@@ -43,7 +43,7 @@ end;
 
 subplot(224),imshow(i2),title('目标');
 
-% 倾斜矫正
+%% 倾斜矫正
 I47=edge(i1,'canny');%边缘检测
 
 
@@ -75,20 +75,30 @@ target_I = imcrop(I,rects(K,:));
 
 
 A = imrotate(target_I,-angle,'bilinear');% imrate 是逆时针的所以取一个负号
-% 滤出蓝色
+
+%% 滤出蓝色 字符分割
 p=[0.56 0.71 0.4 1 0.3 1 0];
 A2 = rgb2hsv(A);
+[y,x,z]=size(A2);
+A3 = zeros(y,x);
 
-A2(:,:,1)= 1;
+for i = 1 : y
+    for j = 1 : x
+        hij = A2(i, j, 1);
+        sij = A2(i, j, 2);
+        vij = A2(i, j, 3);
+        if (hij>=p(1) && hij<=p(2)) &&( sij >=p(3)&& sij<=p(4))&&...
+                (vij>=p(5)&&vij<=p(6))  % 蓝色
+            A3(i,j) = 1;
+        end
+    end
+end;
 
-se=[1 1 1
-   ];%列腐蚀算子，腐蚀算子的形状很重要
-A76=imerode(A,se);
-
+%% 输出
 figure;
 subplot(221),imshow(A);
-subplot(222),imshow(A76);
-subplot(223),imshow(A76);
-subplot(224),imshow(A2);
+
+subplot(222),imshow(A2);
+subplot(223),imshow(A3);
 
 

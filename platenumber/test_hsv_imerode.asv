@@ -1,0 +1,8 @@
+%% 车牌处理 颜色->形态（蓝牌）
+clear;clc;close all;
+%% 图片特征
+filename = 'http://www.cnr.cn/2013qcpd/qczcjj/20150126/W020150126309165487359.jpg';%FileName();
+
+I=imread(filename);
+I2 = rgb2hsv(I);
+
